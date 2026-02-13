@@ -9,7 +9,7 @@ echo ""
 
 # 依存パッケージチェック
 echo "[1/4] 依存パッケージのチェック..."
-if ! pkg-config --exists gstreamer-1.0 gstreamer-webrtc-1.0 libsoup-3.0 json-glib-1.0; then
+if ! pkg-config --exists gstreamer-1.0 gstreamer-webrtc-1.0 libsoup-2.4 json-glib-1.0; then
     echo "❌ 必要なパッケージがインストールされていません"
     echo ""
     read -p "今すぐインストールしますか? (y/N): " -n 1 -r

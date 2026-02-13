@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -O2
-PKGS = gstreamer-1.0 gstreamer-webrtc-1.0 libsoup-3.0 json-glib-1.0
+PKGS = gstreamer-1.0 gstreamer-webrtc-1.0 libsoup-2.4 json-glib-1.0
 
 all: pi_webrtc_sender
 
@@ -21,7 +21,7 @@ install_deps:
 		gstreamer1.0-plugins-bad \
 		gstreamer1.0-plugins-ugly \
 		gstreamer1.0-nice \
-		libsoup-3.0-dev \
+		libsoup2.4-dev \
 		libjson-glib-dev
 
 .PHONY: all clean install_deps
