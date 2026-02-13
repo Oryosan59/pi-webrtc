@@ -47,7 +47,3 @@ chmod +x setup_pi.sh
 | :--- | :--- |
 | **Sender** | Raspberry Pi OS (64-bit), V4L2 カメラ |
 | **Viewer** | Windows 10/11, Node.js 18+, Rust 1.70+ |
-
-## ライセンス
-
-MIT License

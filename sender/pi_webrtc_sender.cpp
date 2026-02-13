@@ -80,7 +80,7 @@ static void on_ice_candidate(GstElement *webrtc, guint mline_index,
   json_node_free(root);
 }
 
-// WebRTCのネゴシエーション（今回は受信側からのOffer待ちなので何もしない）
+// WebRTCのネゴシエーション
 static void on_negotiation_needed(GstElement *element, gpointer user_data) {}
 
 // WebSocketからのメッセージ処理
@@ -111,7 +111,7 @@ static void on_ws_message(SoupWebsocketConnection *conn, gint type,
 
     GstWebRTCSessionDescription *offer =
         gst_webrtc_session_description_new(GST_WEBRTC_SDP_TYPE_OFFER, sdp);
-    GPromise *promise = gst_promise_new();
+    GstPromise *promise = gst_promise_new();
     g_signal_emit_by_name(webrtc, "set-remote-description", offer, promise);
     gst_promise_wait(promise);
     gst_promise_unref(promise);
@@ -119,7 +119,7 @@ static void on_ws_message(SoupWebsocketConnection *conn, gint type,
 
     // Create Answer
     promise = gst_promise_new_with_change_func(
-        [](GPromise *p, gpointer user_data) {
+        [](GstPromise *p, gpointer user_data) {
           GstWebRTCSessionDescription *answer = nullptr;
           const GstStructure *reply = gst_promise_get_reply(p);
           gst_structure_get(reply, "answer",
@@ -160,8 +160,9 @@ static void on_ws_closed(SoupWebsocketConnection *conn, gpointer user_data) {
   g_main_loop_quit((GMainLoop *)user_data);
 }
 
-static void on_ws_connected(SoupSession *session, GAsyncResult *res,
+static void on_ws_connected(GObject *obj, GAsyncResult *res,
                             gpointer user_data) {
+  SoupSession *session = SOUP_SESSION(obj);
   GError *error = nullptr;
   ws_conn = soup_session_websocket_connect_finish(session, res, &error);
   if (error) {
@@ -206,9 +207,6 @@ int main(int argc, char *argv[]) {
   GMainLoop *loop = g_main_loop_new(nullptr, FALSE);
 
   // パイプライン構築
-  // ビットレート制御のため、x264enc / v4l2h264enc に bitrate/video_bitrate
-  // を設定できると良いが
-  // ここではシンプルさを保つため、まず解像度とFPSを反映する
   gchar *pipeline_str = g_strdup_printf(
       "v4l2src device=/dev/video2 io-mode=dmabuf ! "
       "video/"
