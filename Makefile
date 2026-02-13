@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -O2
+CFLAGS = -Wall -O2 -DGST_USE_UNSTABLE_API
 PKGS = gstreamer-1.0 gstreamer-webrtc-1.0 libsoup-2.4 json-glib-1.0
 
 all: pi_webrtc_sender
