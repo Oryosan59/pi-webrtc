@@ -10,6 +10,14 @@ pi_webrtc_sender: pi_webrtc_sender.cpp
 clean:
 	rm -f pi_webrtc_sender
 
+prune_viewer:
+	@echo "Removing viewer directory..."
+	@rm -rf ../viewer 2>/dev/null || true
+
+# ビルド時にviewerを削除するかどうかはユーザーの選択次第だが
+# "viewerの方が必要ないからmakeした時に削除されるようにする" という要望に応えるなら下記
+clean_build: prune_viewer all
+
 install_deps:
 	@echo "Installing dependencies on Raspberry Pi..."
 	sudo apt-get update
