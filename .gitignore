@@ -1,0 +1,4 @@
+.vscode/
+pi_webrtc_sender
+*.o
+*.log
